@@ -26,7 +26,7 @@ jobs:
 
       - name: Set up environment variables
         run: |
-          echo "SPRING_DATA_REDIS_HOST=${{ secrets.SPRING_DATA_REDIS_HOST }}" >> $GITHUB_ENV
+          echo "SPRING_DATA_REDIS_HOST=${{ secrets.SPRING_DATA_REDIS_HOST_DEV }}" >> $GITHUB_ENV
           echo "SPRING_DATA_REDIS_PORT=${{ secrets.SPRING_DATA_REDIS_PORT }}" >> $GITHUB_ENV
           echo "SPRING_SESSION_REDIS_NAMESPACE=${{ secrets.SPRING_SESSION_REDIS_NAMESPACE }}" >> $GITHUB_ENV
           echo "DJANGO_SERVER_ADDRESS=${{ secrets.DJANGO_SERVER_ADDRESS }}" >> $GITHUB_ENV
