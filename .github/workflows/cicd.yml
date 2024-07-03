@@ -61,60 +61,60 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/bojguidance:latest
 
-      - name: get GitHub IP
-        id: ip
-        uses: haythem/public-ip@v1.2
-
-      # Configure AWS Credentials - AWS 접근 권한 취득(IAM)
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
-
-      # Add GitHub ip to AWS
-      - name: Add GitHub IP to AWS
-        run: |
-          aws ec2 authorize-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
-
-      # AWS EC2 Server Connect & Docker 명령어 실행
-      - name: AWS EC2 Connection
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ec2-user
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          port: 22
-          timeout: 60s
-          script: |
-            export PASSWORD_ENCODER=${{ secrets.PASSWORD_ENCODER }}
-            export SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
-            export SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}
-            export SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
-            export SPRING_DATA_REDIS_HOST=${{ secrets.SPRING_DATA_REDIS_HOST }}
-            export SPRING_DATA_REDIS_PORT=${{ secrets.SPRING_DATA_REDIS_PORT }}
-            export SPRING_SESSION_REDIS_NAMESPACE=${{ secrets.SPRING_SESSION_REDIS_NAMESPACE }}
-            export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-            export DJANGO_SERVER_ADDRESS=${{ secrets.DJANGO_SERVER_ADDRESS }}
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/bojguidance:latest
-            sudo docker stop $(docker ps -a -q)
-            sudo docker run -d --log-driver=syslog -p 8080:8080 \
-              --network server \
-              -e PASSWORD_ENCODER=${{ secrets.PASSWORD_ENCODER }} \
-              -e SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
-              -e SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
-              -e SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
-              -e SPRING_DATA_REDIS_HOST=${{ secrets.SPRING_DATA_REDIS_HOST }} \
-              -e SPRING_DATA_REDIS_PORT=${{ secrets.SPRING_DATA_REDIS_PORT }} \
-              -e SPRING_SESSION_REDIS_NAMESPACE=${{ secrets.SPRING_SESSION_REDIS_NAMESPACE }} \
-              -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
-              -e DJANGO_SERVER_ADDRESS=${{ secrets.DJANGO_SERVER_ADDRESS }} \
-              ${{ secrets.DOCKERHUB_USERNAME }}/bojguidance:latest
-            sudo docker rm $(docker ps --filter 'status=exited' -a -q)
-            sudo docker image prune -a -f
-
-      # REMOVE Github IP FROM security group
-      - name: Remove IP FROM security group
-        run: |
-          aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+#      - name: get GitHub IP
+#        id: ip
+#        uses: haythem/public-ip@v1.2
+#
+#      # Configure AWS Credentials - AWS 접근 권한 취득(IAM)
+#      - name: Configure AWS Credentials
+#        uses: aws-actions/configure-aws-credentials@v1
+#        with:
+#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          aws-region: ap-northeast-2
+#
+#      # Add GitHub ip to AWS
+#      - name: Add GitHub IP to AWS
+#        run: |
+#          aws ec2 authorize-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+#
+#      # AWS EC2 Server Connect & Docker 명령어 실행
+#      - name: AWS EC2 Connection
+#        uses: appleboy/ssh-action@v0.1.6
+#        with:
+#          host: ${{ secrets.EC2_HOST }}
+#          username: ec2-user
+#          key: ${{ secrets.EC2_PRIVATE_KEY }}
+#          port: 22
+#          timeout: 60s
+#          script: |
+#            export PASSWORD_ENCODER=${{ secrets.PASSWORD_ENCODER }}
+#            export SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+#            export SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}
+#            export SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
+#            export SPRING_DATA_REDIS_HOST=${{ secrets.SPRING_DATA_REDIS_HOST }}
+#            export SPRING_DATA_REDIS_PORT=${{ secrets.SPRING_DATA_REDIS_PORT }}
+#            export SPRING_SESSION_REDIS_NAMESPACE=${{ secrets.SPRING_SESSION_REDIS_NAMESPACE }}
+#            export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+#            export DJANGO_SERVER_ADDRESS=${{ secrets.DJANGO_SERVER_ADDRESS }}
+#            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/bojguidance:latest
+#            sudo docker stop $(docker ps -a -q)
+#            sudo docker run -d --log-driver=syslog -p 8080:8080 \
+#              --network server \
+#              -e PASSWORD_ENCODER=${{ secrets.PASSWORD_ENCODER }} \
+#              -e SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
+#              -e SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
+#              -e SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
+#              -e SPRING_DATA_REDIS_HOST=${{ secrets.SPRING_DATA_REDIS_HOST }} \
+#              -e SPRING_DATA_REDIS_PORT=${{ secrets.SPRING_DATA_REDIS_PORT }} \
+#              -e SPRING_SESSION_REDIS_NAMESPACE=${{ secrets.SPRING_SESSION_REDIS_NAMESPACE }} \
+#              -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
+#              -e DJANGO_SERVER_ADDRESS=${{ secrets.DJANGO_SERVER_ADDRESS }} \
+#              ${{ secrets.DOCKERHUB_USERNAME }}/bojguidance:latest
+#            sudo docker rm $(docker ps --filter 'status=exited' -a -q)
+#            sudo docker image prune -a -f
+#
+#      # REMOVE Github IP FROM security group
+#      - name: Remove IP FROM security group
+#        run: |
+#          aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
