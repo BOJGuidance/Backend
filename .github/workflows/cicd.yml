@@ -24,16 +24,14 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Set up environment variables
-        run: |
-          echo "SPRING_DATA_REDIS_HOST=${{ secrets.SPRING_DATA_REDIS_HOST_DEV }}" >> $GITHUB_ENV
-          echo "SPRING_DATA_REDIS_PORT=${{ secrets.SPRING_DATA_REDIS_PORT }}" >> $GITHUB_ENV
-          echo "SPRING_SESSION_REDIS_NAMESPACE=${{ secrets.SPRING_SESSION_REDIS_NAMESPACE }}" >> $GITHUB_ENV
-          echo "DJANGO_SERVER_ADDRESS=${{ secrets.DJANGO_SERVER_ADDRESS }}" >> $GITHUB_ENV
-          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
-
       - name: Build with Gradle
         run: ./gradlew clean build
+        env:
+          SPRING_DATA_REDIS_HOST: ${{ secrets.SPRING_DATA_REDIS_HOST_DEV }}
+          SPRING_DATA_REDIS_PORT: ${{ secrets.SPRING_DATA_REDIS_PORT }}
+          SPRING_SESSION_REDIS_NAMESPACE: ${{ secrets.SPRING_SESSION_REDIS_NAMESPACE }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          DJANGO_SERVER_ADDRESS: ${{ secrets.DJANGO_SERVER_ADDRESS }}
 
       - name: Get current time
         uses: josStorer/get-current-time@v2.0.2
