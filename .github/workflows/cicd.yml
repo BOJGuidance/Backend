@@ -26,16 +26,6 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew clean build
-        env:
-          PASSWORD_ENCODER: ${{ secrets.PASSWORD_ENCODER }}
-          SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
-          SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
-          SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
-          SPRING_DATA_REDIS_HOST: ${{ secrets.SPRING_DATA_REDIS_HOST_DEV }}
-          SPRING_DATA_REDIS_PORT: ${{ secrets.SPRING_DATA_REDIS_PORT }}
-          SPRING_SESSION_REDIS_NAMESPACE: ${{ secrets.SPRING_SESSION_REDIS_NAMESPACE }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          DJANGO_SERVER_ADDRESS: ${{ secrets.DJANGO_SERVER_ADDRESS }}
 
       - name: Get current time
         uses: josStorer/get-current-time@v2.0.2
