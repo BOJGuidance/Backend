@@ -1,6 +1,6 @@
 package com.boj.guidance.controller;
 
-import com.boj.guidance.service.OpenAIService;
+import com.boj.guidance.service.CodeAnalysisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,12 +10,12 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/openai")
 @CrossOrigin(origins = {"*"})
-public class OpenAIController {
+public class CodeAnalysisController {
 
-    private final OpenAIService openAIService;
+    private final CodeAnalysisService codeAnalysisService;
 
     @PostMapping("/analyze")
     public String analyzeCode(@RequestBody String codeContent) throws IOException {
-        return openAIService.analyzeCode(codeContent);
+        return codeAnalysisService.analyzeCode(codeContent);
     }
 }

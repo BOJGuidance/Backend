@@ -1,5 +1,6 @@
 package com.boj.guidance.dto.SubmissionDto;
 
+import com.boj.guidance.domain.Member;
 import com.boj.guidance.domain.Submission;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,24 +11,20 @@ public class SubmissionReceiveRequestDto {
     private String codeContent;
     private String userName;
     private String submitId;
-    private String userId;
     private String problemId;
-    private String problemTitle;
     private String result;
     private String memory;
     private String time;
     private String language;
     private String codeLength;
 
-    public Submission toEntity(){
+    public Submission toEntity(Member member){
         return Submission.builder()
                 .codeContent(codeContent)
-                .userName(userName)
+                .member(member)
                 .submitId(submitId)
-                .userId(userId)
                 .problemId(problemId)
-                .problemTitle(problemTitle)
-                .result(result)
+                .result(result.equals("맞았습니다!!"))
                 .memory(memory)
                 .time(time)
                 .language(language)

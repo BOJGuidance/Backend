@@ -1,6 +1,6 @@
 package com.boj.guidance.service.implement;
 
-import com.boj.guidance.service.OpenAIService;
+import com.boj.guidance.service.CodeAnalysisService;
 import com.boj.guidance.util.OpenAIClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
-public class OpenAIServiceImpl implements OpenAIService {
+public class CodeAnalysisServiceImpl implements CodeAnalysisService {
 
     private final OpenAIClient openAIClient;
 
