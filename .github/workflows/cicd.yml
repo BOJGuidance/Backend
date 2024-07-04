@@ -2,7 +2,7 @@ name: CI/CD
 
 on:
   push:
-    branches: [main, develop, cicd/exceptAWS]
+    branches: [main, develop]
 
 jobs:
   build:
