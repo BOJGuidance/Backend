@@ -20,17 +20,17 @@ public class Post {
     @Id
     @LockSerial
     private String id;
-    private String title;
-    private String content;
-    private String createdAt;
-    private String updatedAt;
-    private Boolean isDeleted;
+    private String title;               // 제목
+    private String content;             // 내용
+    private String createdAt;           // 작성 시간
+    private String updatedAt;           // 수정 시간
+    private Boolean isDeleted;          // 삭제 여부
     @Enumerated(EnumType.STRING)
-    private PostType postType;
-    private Integer likes;
+    private PostType postType;          // 분류
+    private Integer likes;              // 좋아요 개수
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member writer;
+    private Member writer;              // 작성자
     @OneToMany(mappedBy = "post")
     private List<Comment> commentList = new ArrayList<>();
 
