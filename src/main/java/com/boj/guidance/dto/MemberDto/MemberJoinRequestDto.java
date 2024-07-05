@@ -1,11 +1,13 @@
 package com.boj.guidance.dto.MemberDto;
 
 import com.boj.guidance.domain.Member;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class MemberJoinRequestDto {
     private String handle;               // 사용자명
     private String loginId;              // 로그인 id
