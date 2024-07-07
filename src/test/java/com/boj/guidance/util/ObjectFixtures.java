@@ -6,7 +6,9 @@ import com.boj.guidance.domain.enumerate.PostType;
 public class ObjectFixtures {
 
     public static Member getMember() {
-        return new Member("user1", "user1", "test", "test", 1L, 1L, 1L, 1L, 1L);
+        Member member = new Member("user1", "user1", "test", "test", 1L, 1L, 1L, 1L, 1L);
+        member.setWeakAlgorithm("algorithm");
+        return member;
     }
 
     public static Post getPost() {
@@ -15,6 +17,10 @@ public class ObjectFixtures {
 
     public static Comment getComment() {
         return new Comment(getPost(), getMember(), null, "comment1");
+    }
+
+    public static StudyGroup getStudyGroup() {
+        return new StudyGroup(getMember(), "studyGroup1");
     }
 
     public static Comment getChildComment() {
