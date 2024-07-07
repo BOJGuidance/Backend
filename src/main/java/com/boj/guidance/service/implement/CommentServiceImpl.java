@@ -58,10 +58,12 @@ public class CommentServiceImpl implements CommentService {
         Member deleter = getMember(memberId);
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(
-                        () -> new CommentException(ResponseCode.POST_NOT_FOUND)
+                        () -> new CommentException(ResponseCode.COMMENT_NOT_FOUND)
                 );
         Member writer = getMember(comment.getWriter().getId()); writer.delComment(comment);
         Post post = getPost(comment.getPost().getId()); post.delComment(comment);
+        Comment parentComment = comment.getParentComment();
+        if (parentComment != null) parentComment.deleteComment(comment);
         comment.deleted();
         return new CommentResponseDto().toDto(comment);
     }

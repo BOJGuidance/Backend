@@ -56,6 +56,10 @@ public class Comment {
         this.commentList.add(comment);
     }
 
+    public void deleteComment(Comment comment) {
+        this.commentList.remove(comment);
+    }
+
     public void deleted() {
         setIsDeleted(Boolean.TRUE);
     }
