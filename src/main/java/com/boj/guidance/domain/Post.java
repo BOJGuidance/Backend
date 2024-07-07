@@ -72,5 +72,10 @@ public class Post {
     public void delComment(Comment comment) {
         this.commentList.remove(comment);
     }
+
+    // 테스트용 id set 함수
+    public void setId(String id) {
+        this.id = id;
+    }
 }
 

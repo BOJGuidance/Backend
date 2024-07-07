@@ -129,4 +129,8 @@ public class Member {
         this.codeAnalysesList.add(codeAnalysis);
     }
 
+    // 테스트용 id set 함수
+    public void setId(String id) {
+        this.id = id;
+    }
 }
