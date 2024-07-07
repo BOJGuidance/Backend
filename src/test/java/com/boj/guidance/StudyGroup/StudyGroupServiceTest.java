@@ -19,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,10 +42,6 @@ public class StudyGroupServiceTest {
 
     @MockBean
     StudyGroupRepository studyGroupRepository;
-
-    @BeforeEach
-    void setUp() {
-    }
 
     @Test
     @DisplayName("스터디그룹 생성")
