@@ -10,8 +10,6 @@ import com.boj.guidance.repository.MemberRepository;
 import com.boj.guidance.repository.ProblemRepository;
 import com.boj.guidance.repository.StudyGroupRepository;
 import com.boj.guidance.service.StudyGroupService;
-import com.boj.guidance.util.ObjectFixtures;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.boj.guidance.util.ObjectFixtures.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -48,7 +47,7 @@ public class StudyGroupServiceTest {
     void createGroup() {
         // given
         StudyGroupGenerateRequestDto generateRequestDto = new StudyGroupGenerateRequestDto("test");
-        Member member = ObjectFixtures.getMember();
+        Member member = getMember();
         StudyGroup studyGroup = new StudyGroup(member, generateRequestDto.getPropose());
 
         given(memberRepository.findById("member")).willReturn(Optional.of(member));
@@ -68,7 +67,7 @@ public class StudyGroupServiceTest {
     @DisplayName("스터디그룹 조회")
     void findAllGroup() {
         // given
-        Member member = ObjectFixtures.getMember();
+        Member member = getMember();
         StudyGroup studyGroup1 = new StudyGroup(member, "studyGroup1");
         StudyGroup studyGroup2 = new StudyGroup(member, "studyGroup2");
         List<StudyGroup> list = new ArrayList<>();
@@ -93,7 +92,7 @@ public class StudyGroupServiceTest {
     @DisplayName("스터디그룹 삭제")
     void deleteGroup() {
         // given
-        StudyGroup studyGroup = ObjectFixtures.getStudyGroup();
+        StudyGroup studyGroup = getStudyGroup();
 
         given(studyGroupRepository.findById("studyGroup")).willReturn(Optional.of(studyGroup));
         given(studyGroupRepository.save(any(StudyGroup.class))).willReturn(studyGroup);
@@ -110,8 +109,8 @@ public class StudyGroupServiceTest {
     @DisplayName("스터디그룹 가입")
     void joinGroup() {
         // given
-        Member member = ObjectFixtures.getMember();
-        StudyGroup studyGroup = ObjectFixtures.getStudyGroup();
+        Member member = getMember();
+        StudyGroup studyGroup = getStudyGroup();
 
         given(memberRepository.findById("user1")).willReturn(Optional.of(member));
         given(memberRepository.save(any(Member.class))).willReturn(member);
@@ -131,8 +130,8 @@ public class StudyGroupServiceTest {
     @DisplayName("스터디그룹 탈퇴")
     void exitGroup() {
         // given
-        Member member = ObjectFixtures.getMember();
-        StudyGroup studyGroup = ObjectFixtures.getStudyGroup();
+        Member member = getMember();
+        StudyGroup studyGroup = getStudyGroup();
 
         given(memberRepository.findById("member")).willReturn(Optional.of(member));
         given(studyGroupRepository.findById("studyGroup")).willReturn(Optional.of(studyGroup));
@@ -184,8 +183,8 @@ public class StudyGroupServiceTest {
     @DisplayName("스티디그룹 내의 문제 풀이")
     void problemSolvedInGroup() {
         // given
-        Problem problem = ObjectFixtures.getProblem();
-        StudyGroup studyGroup = ObjectFixtures.getStudyGroup();
+        Problem problem = getProblem();
+        StudyGroup studyGroup = getStudyGroup();
 
         given(problemRepository.findById(1000)).willReturn(Optional.of(problem));
         given(studyGroupRepository.findById("studyGroup")).willReturn(Optional.of(studyGroup));
@@ -204,8 +203,8 @@ public class StudyGroupServiceTest {
     @DisplayName("사용자가 스터디그룹에 가입되어 있는 상태")
     void checkMemberJoined() {
         // given
-        Member member = ObjectFixtures.getMember();
-        StudyGroup studyGroup = ObjectFixtures.getStudyGroup();
+        Member member = getMember();
+        StudyGroup studyGroup = getStudyGroup();
         studyGroup.addMember(member);
 
         given(studyGroupRepository.findByMemberId("member")).willReturn(Optional.of(studyGroup));
@@ -223,8 +222,8 @@ public class StudyGroupServiceTest {
     @DisplayName("사용자가 스터디그룹에 가입되어 있지 않은 상태")
     void checkNotMemberJoined() {
         // given
-        Member member = ObjectFixtures.getMember();
-        StudyGroup studyGroup = ObjectFixtures.getStudyGroup();
+        Member member = getMember();
+        StudyGroup studyGroup = getStudyGroup();
 
         given(studyGroupRepository.findByMemberId("member")).willReturn(Optional.empty());
         given(studyGroupRepository.save(any(StudyGroup.class))).willReturn(studyGroup);

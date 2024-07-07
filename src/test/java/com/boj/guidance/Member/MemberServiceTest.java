@@ -9,7 +9,6 @@ import com.boj.guidance.dto.MemberDto.MemberLoginRequestDto;
 import com.boj.guidance.dto.MemberDto.MemberResponseDto;
 import com.boj.guidance.repository.MemberRepository;
 import com.boj.guidance.service.MemberService;
-import com.boj.guidance.util.ObjectFixtures;
 import com.boj.guidance.util.exception.MemberException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Optional;
 
+import static com.boj.guidance.util.ObjectFixtures.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -70,7 +70,7 @@ public class MemberServiceTest {
     @DisplayName("로그인")
     void loginMember() {
         // given
-        Member member = ObjectFixtures.getMember();
+        Member member = getMember();
         MemberLoginRequestDto loginRequestDto = new MemberLoginRequestDto("user1", "test");
 
         given(memberRepository.existsById("user1")).willReturn(true);
@@ -89,7 +89,7 @@ public class MemberServiceTest {
     @DisplayName("역할 변경")
     void changeRole() {
         // given
-        Member member = ObjectFixtures.getMember();
+        Member member = getMember();
 
         given(memberRepository.findById("test")).willReturn(Optional.of(member));
         given(memberRepository.save(any(Member.class))).willReturn(member);
@@ -106,7 +106,7 @@ public class MemberServiceTest {
     @DisplayName("상태 변경")
     void changeState() {
         // given
-        Member member = ObjectFixtures.getMember();
+        Member member = getMember();
 
         given(memberRepository.findById("test")).willReturn(Optional.of(member));
         given(memberRepository.save(any(Member.class))).willReturn(member);
@@ -123,7 +123,7 @@ public class MemberServiceTest {
     @DisplayName("취약 알고리즘 수정")
     void updateWeakAlgorithm() {
         // given
-        Member member = ObjectFixtures.getMember();
+        Member member = getMember();
         String newAlgorithm = "newAlgorithm";
 
         given(memberRepository.findByHandle("test")).willReturn(Optional.of(member));

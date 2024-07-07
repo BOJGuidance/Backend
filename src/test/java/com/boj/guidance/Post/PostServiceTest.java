@@ -9,7 +9,6 @@ import com.boj.guidance.dto.PostDto.PostUpdateRequestDtp;
 import com.boj.guidance.repository.MemberRepository;
 import com.boj.guidance.repository.PostRepository;
 import com.boj.guidance.service.PostService;
-import com.boj.guidance.util.ObjectFixtures;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Optional;
 
+import static com.boj.guidance.util.ObjectFixtures.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -41,7 +41,7 @@ public class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        member = ObjectFixtures.getMember();
+        member = getMember();
         given(memberRepository.findById("member")).willReturn(Optional.of(member));
     }
 
@@ -68,7 +68,7 @@ public class PostServiceTest {
     @DisplayName("게시물 삭제")
     void deletePost() {
         // given
-        Post post = ObjectFixtures.getPost();
+        Post post = getPost();
 
         given(postRepository.findById("post")).willReturn(Optional.of(post));
         given(postRepository.save(post)).willReturn(post);
@@ -85,7 +85,7 @@ public class PostServiceTest {
     @DisplayName("게시물 업데이트")
     void updatePost() {
         // given
-        Post post = ObjectFixtures.getPost();
+        Post post = getPost();
         PostUpdateRequestDtp updateRequestDtp = new PostUpdateRequestDtp("updatedTitle", "updatedContent");
 
         given(postRepository.findById("post")).willReturn(Optional.of(post));
@@ -104,7 +104,7 @@ public class PostServiceTest {
     @DisplayName("좋아요 추가")
     void updateLikes() {
         // given
-        Post post = ObjectFixtures.getPost();
+        Post post = getPost();
 
         given(postRepository.findById("post")).willReturn(Optional.of(post));
         given(postRepository.save(any(Post.class))).willReturn(post);
