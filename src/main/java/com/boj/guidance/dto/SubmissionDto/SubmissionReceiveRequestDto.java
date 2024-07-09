@@ -2,11 +2,13 @@ package com.boj.guidance.dto.SubmissionDto;
 
 import com.boj.guidance.domain.Member;
 import com.boj.guidance.domain.Submission;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class SubmissionReceiveRequestDto {
     private String codeContent;
     private String userName;
