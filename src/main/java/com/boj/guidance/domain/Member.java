@@ -5,6 +5,7 @@ import com.boj.guidance.domain.enumerate.StudyGroupState;
 import com.boj.guidance.util.annotation.LockSerial;
 import jakarta.persistence.*;
 import lombok.*;
+import org.aspectj.apache.bcel.classfile.Code;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -44,6 +45,10 @@ public class Member {
     private List<Post> postList = new ArrayList<>();
     @OneToMany(mappedBy = "writer")
     private List<Comment> commentList = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<Submission> submissionList = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<CodeAnalysis> codeAnalysesList = new ArrayList<>();
 
     @Builder
     public Member(
@@ -116,4 +121,16 @@ public class Member {
         this.commentList.remove(comment);
     }
 
+    public void addSubmission(Submission submission) {
+        this.submissionList.add(submission);
+    }
+
+    public void addCodeAnalysis(CodeAnalysis codeAnalysis) {
+        this.codeAnalysesList.add(codeAnalysis);
+    }
+
+    // 테스트용 id set 함수
+    public void setId(String id) {
+        this.id = id;
+    }
 }

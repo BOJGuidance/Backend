@@ -3,9 +3,11 @@ package com.boj.guidance.dto.PostDto;
 import com.boj.guidance.domain.Member;
 import com.boj.guidance.domain.Post;
 import com.boj.guidance.domain.enumerate.PostType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class PostCreateRequestDto {
     private String title;
     private String content;

@@ -23,19 +23,19 @@ public class Comment {
     private String id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
-    private Post post;
+    private Post post;                      // 게시물
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member writer;
-    private String content;
-    private String createdAt;
+    private Member writer;                  // 작성자
+    private String content;                 // 내용
+    private String createdAt;               // 작성 시간
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")
-    private Comment parentComment;
+    private Comment parentComment;          // 부모 댓글(nullable)
     @OneToMany(mappedBy = "parentComment")
     private List<Comment> commentList = new ArrayList<>();
     @Setter
-    private Boolean isDeleted;
+    private Boolean isDeleted;              // 삭제 여부
 
     @Builder
     public Comment(
@@ -54,6 +54,10 @@ public class Comment {
 
     public void addComment(Comment comment) {
         this.commentList.add(comment);
+    }
+
+    public void deleteComment(Comment comment) {
+        this.commentList.remove(comment);
     }
 
     public void deleted() {

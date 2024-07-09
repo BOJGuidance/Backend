@@ -63,6 +63,7 @@ public class StudyGroupServiceImpl implements StudyGroupService {
         member.joinStudyGroup(studyGroup);
         memberRepository.save(member);
         studyGroup.setAvgRating((studyGroup.getAvgRating() + member.getRating()) / studyGroup.getMemberList().size());
+        studyGroup.addMember(member);
         new StudyGroupResponseDto().toResponse(studyGroupRepository.save(studyGroup));
     }
 
@@ -72,6 +73,7 @@ public class StudyGroupServiceImpl implements StudyGroupService {
         Member member = getMember(memberId);
         StudyGroup studyGroup = getStudyGroup(groupId);
         member.exitStudyGroup(studyGroup);
+        studyGroup.removeMember(member);
         memberRepository.save(member);
         return new StudyGroupResponseDto().toResponse(studyGroupRepository.save(studyGroup));
     }
@@ -99,7 +101,11 @@ public class StudyGroupServiceImpl implements StudyGroupService {
     @Override
     public Optional<StudyGroupResponseDto> checkIfMemberJoined(String handle) {
         Optional<StudyGroup> studyGroup = studyGroupRepository.findByMemberId(handle);
-        return studyGroup.map(group -> new StudyGroupResponseDto().toResponse(group));
+        if (studyGroup.isPresent()) {
+            return studyGroup.map(group -> new StudyGroupResponseDto().toResponse(group));
+        } else {
+            return Optional.empty();
+        }
     }
 
     private Member getMember(String memberId) {

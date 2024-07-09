@@ -37,7 +37,7 @@ public enum ResponseCode {
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, false, "댓글 조회 실패"),
 
     // 코드 분석 관련 오류
-    CODE_ANALYSIS_FAIL(HttpStatus.NOT_FOUND, false, "SubmitId Not Found"),
+    CODE_ANALYSIS_FAIL(HttpStatus.NOT_FOUND, false, "코드 분석 실패"),
   
     // 문제 관련 오류
     PROBLEM_FIND_FAIL(HttpStatus.NOT_FOUND, false, "문제 검색 실패"),
@@ -59,6 +59,7 @@ public enum ResponseCode {
     MEMBER_STATE_CHANGE_SUCCESS(HttpStatus.OK, true, "State 변경 성공"),
     MEMBER_WEAK_ALGORITHM_UPDATE_SUCCESS(HttpStatus.OK, true, "취약 알고리즘 업데이트 성공"),
     ALGORITHM_NAME_SEARCH_SUCCESS(HttpStatus.FOUND, true, "문제 검색 성공"),
+    CODE_ANALYSIS_SUCCESS(HttpStatus.OK, true, "코드 분석 성공"),
     PROBLEM_RECOMMEND_SUCCESS(HttpStatus.FOUND, true, "문제 추천 성공"),
     STUDY_GROUP_CREATE_SUCCESS(HttpStatus.CREATED, true, "스터디그룹 생성 성공"),
     STUDY_GROUP_RECRUIT_SUCCESS(HttpStatus.OK, true, "스터디그룹 부원 모집 성공"),

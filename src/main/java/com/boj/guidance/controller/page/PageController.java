@@ -1,10 +1,5 @@
 package com.boj.guidance.controller.page;
 
-import com.boj.guidance.domain.CodeAnalysis;
-import com.boj.guidance.repository.CodeAnalysisRepository;
-import com.boj.guidance.util.api.ResponseCode;
-import com.boj.guidance.util.exception.CodeAnalysisException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -30,8 +23,6 @@ public class PageController {
 
     private final MemberService memberService;
     private final StudyGroupService studyGroupService;
-
-    private final CodeAnalysisRepository codeAnalysisRepository;
     private final ObjectMapper objectMapper;
 
     // 로그인 페이지 이동
@@ -89,26 +80,26 @@ public class PageController {
         String userName = (String) session.getAttribute("memberId");
 
         if (userName != null) {
-            List<CodeAnalysis> responses;
-            if (category != null && keyword != null && !keyword.isEmpty()) {
-                switch (category) {
-                    case "submitId":
-                        responses = codeAnalysisRepository.findByUserNameAndSubmitIdContaining(userName, keyword);
-                        break;
-                    case "problemId":
-                        responses = codeAnalysisRepository.findByUserNameAndProblemIdContaining(userName, keyword);
-                        break;
-                    case "problemTitle":
-                        responses = codeAnalysisRepository.findByUserNameAndProblemTitleContaining(userName, keyword);
-                        break;
-                    default:
-                        responses = codeAnalysisRepository.findByUserName(userName);
-                }
-            } else {
-                responses = codeAnalysisRepository.findByUserName(userName);
-            }
-            model.addAttribute("responses", responses);
-            model.addAttribute("username", userName);
+//            List<CodeAnalysis> responses;
+//            if (category != null && keyword != null && !keyword.isEmpty()) {
+//                switch (category) {
+//                    case "submitId":
+//                        responses = codeAnalysisRepository.findByUserNameAndSubmitIdContaining(userName, keyword);
+//                        break;
+//                    case "problemId":
+//                        responses = codeAnalysisRepository.findByUserNameAndProblemIdContaining(userName, keyword);
+//                        break;
+//                    case "problemTitle":
+//                        responses = codeAnalysisRepository.findByUserNameAndProblemTitleContaining(userName, keyword);
+//                        break;
+//                    default:
+//                        responses = codeAnalysisRepository.findByUserName(userName);
+//                }
+//            } else {
+////                responses = codeAnalysisRepository.findByUserName(userName);
+//            }
+//            model.addAttribute("responses", responses);
+//            model.addAttribute("username", userName);
             return "codeAnalysis";
         } else {
             return "redirect:/login";
@@ -120,25 +111,25 @@ public class PageController {
                                         @PathVariable String id,
                                         Model model) {
         String userName = (String) session.getAttribute("memberId");
-        CodeAnalysis response = codeAnalysisRepository.findById(id).orElseThrow(
-                () -> new CodeAnalysisException(ResponseCode.CODE_ANALYSIS_FAIL)
-        );
-
-        try {
-            JsonNode root = objectMapper.readTree(response.getResponse());
-            String time = root.path("time").asText();
-            String memory = root.path("memory").asText();
-            String suggest = root.path("suggest").asText();
-
-            model.addAttribute("time", time);
-            model.addAttribute("memory", memory);
-            model.addAttribute("suggest", suggest);
-        } catch (IOException e) {
-            throw new CodeAnalysisException(ResponseCode.CODE_ANALYSIS_FAIL, e);
-        }
-
-        model.addAttribute("response", response);
-        model.addAttribute("username", userName);
+//        CodeAnalysis response = codeAnalysisRepository.findById(id).orElseThrow(
+//                () -> new CodeAnalysisException(ResponseCode.CODE_ANALYSIS_FAIL)
+//        );
+//
+//        try {
+//            JsonNode root = objectMapper.readTree(response.getResponse());
+//            String time = root.path("time").asText();
+//            String memory = root.path("memory").asText();
+//            String suggest = root.path("suggest").asText();
+//
+//            model.addAttribute("time", time);
+//            model.addAttribute("memory", memory);
+//            model.addAttribute("suggest", suggest);
+//        } catch (IOException e) {
+//            throw new CodeAnalysisException(ResponseCode.CODE_ANALYSIS_FAIL, e);
+//        }
+//
+//        model.addAttribute("response", response);
+//        model.addAttribute("username", userName);
         return "codeAnalysisDetail";
     }
 

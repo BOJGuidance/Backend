@@ -18,14 +18,13 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class StudyGroup {
-
     @Id
     @LockSerial
     private String id;
     private String propose;             // 스터디그룹 공동 목표
     @OneToMany(mappedBy = "studyGroup")
     private List<Member> memberList;    // 스터디 부원 list
-    @ManyToMany
+    @OneToMany
     private List<Problem> solvedList;   // 스터디 부원들이 함께 푼 문제 list
     @Setter
     private boolean isDeleted;          // 삭제 여부
@@ -56,6 +55,11 @@ public class StudyGroup {
 
     public void addProblem(Problem problem) {
         this.solvedList.add(problem);
+    }
+
+    // 테스트용 id set 함수
+    public void setId(String id) {
+        this.id = id;
     }
 
 }
