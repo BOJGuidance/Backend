@@ -23,4 +23,7 @@ public interface MemberService {
 
     @Transactional
     MemberResponseDto updateWeakAlgorithm(String handle, String algorithm);
+
+    @Transactional
+    void updateDetails();
 }

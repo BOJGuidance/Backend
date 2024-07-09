@@ -4,7 +4,9 @@ import com.boj.guidance.config.PasswordEncoder;
 import com.boj.guidance.domain.Member;
 import com.boj.guidance.dto.MemberDto.*;
 import com.boj.guidance.repository.MemberRepository;
+import com.boj.guidance.repository.ProblemRepository;
 import com.boj.guidance.service.MemberService;
+import com.boj.guidance.util.AlgorithmVectorUtil;
 import com.boj.guidance.util.api.ResponseCode;
 import com.boj.guidance.util.exception.DjangoException;
 import com.boj.guidance.util.exception.MemberException;
@@ -13,6 +15,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +26,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -31,7 +39,10 @@ public class MemberServiceImpl implements MemberService {
     private String ADDRESS;
 
     private final MemberRepository memberRepository;
+    private final ProblemRepository problemRepository;
     private final PasswordEncoder passwordEncoder;
+
+    public static int overallSum = AlgorithmVectorUtil.overallSum();
 
     // 사용자 회원가입 기능 구현
     @Override
@@ -124,5 +135,78 @@ public class MemberServiceImpl implements MemberService {
         );
         member.setWeakAlgorithm(algorithm);
         return new MemberResponseDto().toResponse(memberRepository.save(member));
+    }
+
+    // 취약 알고리즘 계산
+    public List<String> weakAlgorithm(List<Integer> problems) {
+        Map<String, Integer> userCategoryCounts = new HashMap<>();
+
+        for (Integer problemId : problems) {
+            List<String> categories = problemRepository.findAlgorithmsById(problemId);
+            for (String category : categories) {
+                category = category.trim();
+                userCategoryCounts.put(category, userCategoryCounts.getOrDefault(category, 0) + 1);
+            }
+        }
+
+        int totalOverallCount = overallSum;
+        int totalUserCount = userCategoryCounts.values().stream().mapToInt(Integer::intValue).sum();
+
+        Map<String, Double> overallCategoryPercentages = new HashMap<>();
+        for (Map.Entry<String, Integer> entry : AlgorithmVectorUtil.vector.entrySet()) {
+            overallCategoryPercentages.put(entry.getKey(), (entry.getValue() / (double) totalOverallCount) * 100);
+        }
+
+        Map<String, Double> userCategoryPercentages = new HashMap<>();
+        for (Map.Entry<String, Integer> entry : userCategoryCounts.entrySet()) {
+            userCategoryPercentages.put(entry.getKey(), (entry.getValue() / (double) totalUserCount) * 100);
+        }
+
+        List<Map.Entry<String, Double>> recommendations = new ArrayList<>();
+        for (Map.Entry<String, Double> entry : overallCategoryPercentages.entrySet()) {
+            String category = entry.getKey();
+            double overallPercentage = entry.getValue();
+            double userPercentage = userCategoryPercentages.getOrDefault(category, 0.0);
+            if (userPercentage < overallPercentage) {
+                recommendations.add(new AbstractMap.SimpleEntry<>(category, overallPercentage - userPercentage));
+            }
+        }
+
+        recommendations.sort((a, b) -> Double.compare(b.getValue(), a.getValue()));
+
+        return recommendations.stream()
+                .map(Map.Entry::getKey)
+                .limit(3)
+                .collect(Collectors.toList());
+    }
+
+    // 사용자 맞은 문제 크롤링
+    @Override
+    public void updateDetails() {
+        List<Member> members = memberRepository.findAll();
+
+        for (Member member : members) {
+            String handle = member.getHandle();
+            ArrayList<Integer> list = new ArrayList<>();
+
+            try {
+                Document doc = Jsoup.connect("https://www.acmicpc.net/user/" + handle)
+                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+                        .timeout(10 * 1000)
+                        .get();
+
+                Elements problemList = doc.select(".problem-list a");
+                for (Element problem : problemList) {
+                    String problemNumber = problem.text();
+                    list.add(Integer.parseInt(problemNumber));
+                }
+            } catch (IOException e) {
+                throw new MemberException(ResponseCode.MEMBER_DETAILS_CRAWLING_FAIL);
+            }
+
+            String toSave = weakAlgorithm(list).toString().replace("[", "").replace("]", "").replace(", ", ",");
+            member.setWeakAlgorithm(toSave);
+            memberRepository.save(member);
+        }
     }
 }

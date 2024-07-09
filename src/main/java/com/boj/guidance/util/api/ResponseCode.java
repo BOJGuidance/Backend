@@ -22,6 +22,7 @@ public enum ResponseCode {
     MEMBER_WEAK_ALGORITHM_UPDATE_FAIL(HttpStatus.BAD_REQUEST, false, "취약 알고리즘 업데이트 실패"),
     MEMBER_SOLVED_PROBLEMS_NOT_EXIST(HttpStatus.BAD_REQUEST, false, "취약 알고리즘 null"),
     MEMBER_NOT_EXIST(HttpStatus.NOT_FOUND, false, "사용자 정보 없음"),
+    MEMBER_DETAILS_CRAWLING_FAIL(HttpStatus.BAD_REQUEST, false, "사용자 정보 크롤링 실패"),
 
     // 비밀번호 암호화 관련 오류
     PASSWORD_ENCRYPT_FAIL(HttpStatus.CONFLICT, false, "암호화 실패"),
