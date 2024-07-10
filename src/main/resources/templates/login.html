@@ -132,7 +132,7 @@
 												return response.json();
 											})
 											.then(data => {
-												window.location.href = '/init';
+												window.location.href = '/'; // 성공 후 홈페이지로 이동
 											})
 											.catch(error => {
 												alert(error.message);
