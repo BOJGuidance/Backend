@@ -6,7 +6,6 @@ import com.boj.guidance.util.api.ApiResponse;
 import com.boj.guidance.util.api.ResponseCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +35,6 @@ public class MemberController {
         MemberResponseDto login = memberService.login(dto);
         final HttpSession session = httpRequest.getSession();
         session.setAttribute("memberId", login.getHandle());
-        session.setMaxInactiveInterval(3600);
         return ApiResponse.success(ResponseCode.MEMBER_LOGIN_SUCCESS.getMessage(), login);
     }
 
