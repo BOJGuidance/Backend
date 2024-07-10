@@ -22,10 +22,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -68,6 +66,24 @@ public class ProblemServiceImpl implements ProblemService {
         }
         List<ProblemResponseDto> problemResponseDtos = problems.stream().toList();
         return new ProblemsResponseDto().toArray(problemResponseDtos, problemResponseDtos.size());
+    }
+
+    @Override
+    public ProblemsResponseDto recommendation(String memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new MemberException(ResponseCode.MEMBER_NOT_EXIST)
+        );
+        List<String> weakAlgorithm = Arrays.stream(member.getWeakAlgorithm().split(",")).toList();
+        List<Integer> problems = problemRepository.findAllByWeakAlgorithms(weakAlgorithm);
+        Collections.shuffle(problems);
+
+        ArrayList<ProblemResponseDto> dtos = new ArrayList<>();
+        List<Integer> problemList = problems.stream().limit(5).toList();
+        for (Integer problemId : problemList) {
+            dtos.add(returnProblemById(problemId));
+        }
+
+        return new ProblemsResponseDto(dtos, dtos.size());
     }
 
     // model 연결하여 문제 추천
