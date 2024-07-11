@@ -4,33 +4,23 @@ import com.boj.guidance.config.PasswordEncoder;
 import com.boj.guidance.domain.Member;
 import com.boj.guidance.dto.MemberDto.*;
 import com.boj.guidance.repository.MemberRepository;
+import com.boj.guidance.repository.SystemLogRepository;
 import com.boj.guidance.service.MemberService;
 import com.boj.guidance.util.api.ResponseCode;
-import com.boj.guidance.util.exception.DjangoException;
 import com.boj.guidance.util.exception.MemberException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import java.util.Map;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-    @Value("${django.server.address}")
-    private String ADDRESS;
-
     private final MemberRepository memberRepository;
+    private final SystemLogRepository systemLogRepository;
     private final PasswordEncoder passwordEncoder;
 
     // 사용자 회원가입 기능 구현
@@ -46,40 +36,18 @@ public class MemberServiceImpl implements MemberService {
 
     // 사용자 로그인 기능 구현
     @Override
-    public MemberResponseDto login(MemberLoginRequestDto dto) {
+    public MemberResponseDto login(MemberLoginRequestDto dto, HttpServletRequest httpRequest) {
         Member member = memberRepository.findMemberByLoginIdAndLoginPassword(
                 dto.getLoginId(),
                 passwordEncoder.encrypt(dto.getLoginPassword())
         ).orElseThrow(
                 () -> new MemberException(ResponseCode.MEMBER_LOGIN_FAIL)
         );
-        return new MemberResponseDto().toResponse(member);
-    }
 
-    // 로그인 시 사용자 정보 새로고침
-    @Cacheable(value = "init", key = "#handle")
-    @Override
-    public WeakAlgorithmRequestDto init(String handle) {
-        Member member = memberRepository.findByHandle(handle).orElseThrow(
-                () -> new MemberException(ResponseCode.MEMBER_NOT_EXIST)
-        );
-        String apiUrl = ADDRESS + "/analysis/image/" + member.getHandle();
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiUrl, String.class);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            Map<String, String> responseData = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, String>>() {});
-            String image = "data:image/png;base64, " + responseData.get("image");
-            String weakAlgorithms = String.valueOf(responseData.get("weak")).replace("[", "").replace("]", "").replaceAll(" ", "");
-            member.setWeakAlgorithm(weakAlgorithms);
-            return WeakAlgorithmRequestDto.builder()
-                    .image(image)
-                    .weak(weakAlgorithms)
-                    .build();
-        } catch (JsonProcessingException e) {
-            log.error(e.toString());
-            throw new DjangoException(ResponseCode.ANALYSIS_IMAGE_FAIL);
-        }
+        String ipAddress = httpRequest.getRemoteAddr();
+        String userAgent = httpRequest.getHeader("User-Agent");
+        systemLogRepository.save(new MemberSystemLogDto(member, ipAddress, userAgent).toEntity());
+        return new MemberResponseDto().toResponse(member);
     }
 
     // 백준 사용자 인증 구현

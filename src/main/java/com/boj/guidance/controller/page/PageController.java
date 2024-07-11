@@ -157,18 +157,10 @@ public class PageController {
     @GetMapping("/mypage")
     public String mypage(HttpSession session, Model model) {
         String userName = (String) session.getAttribute("memberId");
-        WeakAlgorithmRequestDto dto = memberService.init(userName);
-        model.addAttribute("image", dto.getImage());
-        model.addAttribute("weak", dto.getWeak());
+//        WeakAlgorithmRequestDto dto = memberService.init(userName);
+//        model.addAttribute("image", dto.getImage());
+//        model.addAttribute("weak", dto.getWeak());
         return "mypage";
-    }
-
-    // 초반 데이터 크롤링
-    @GetMapping("/init")
-    public String init(HttpSession session, Model model) {
-        String userName = (String) session.getAttribute("memberId");
-        model.addAttribute("handle", userName);
-        return "init";
     }
 
     // 라이브 코딩 에디터
