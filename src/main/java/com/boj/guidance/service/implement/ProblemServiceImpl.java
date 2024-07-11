@@ -1,5 +1,6 @@
 package com.boj.guidance.service.implement;
 
+import com.boj.guidance.domain.Member;
 import com.boj.guidance.domain.Problem;
 import com.boj.guidance.dto.ProblemDto.ProblemResponseDto;
 import com.boj.guidance.dto.ProblemDto.ProblemsResponseDto;
@@ -7,6 +8,7 @@ import com.boj.guidance.repository.MemberRepository;
 import com.boj.guidance.repository.ProblemRepository;
 import com.boj.guidance.service.ProblemService;
 import com.boj.guidance.util.api.ResponseCode;
+import com.boj.guidance.util.exception.MemberException;
 import com.boj.guidance.util.exception.ProblemException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +16,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import java.util.ArrayList;
 import java.util.List;
