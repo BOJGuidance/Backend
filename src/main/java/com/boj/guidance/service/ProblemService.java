@@ -14,7 +14,4 @@ public interface ProblemService {
 
     @Transactional(readOnly = true)
     ProblemsResponseDto returnRandomProblems();
-
-    @Transactional(readOnly = true)
-    ProblemsResponseDto recommendProblems(String handle);
 }
