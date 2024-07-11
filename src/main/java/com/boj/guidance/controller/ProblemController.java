@@ -34,5 +34,9 @@ public class ProblemController {
     /**
      * 문제 추천
      */
+    @GetMapping("/recommend/{memberId}")
+    public ApiResponse<ProblemsResponseDto> getProblemsByRecommend(@PathVariable("memberId") String memberId) {
+        return ApiResponse.success(ResponseCode.PROBLEM_RECOMMEND_SUCCESS.getMessage(), problemService.recommendation(memberId));
+    }
 
 }

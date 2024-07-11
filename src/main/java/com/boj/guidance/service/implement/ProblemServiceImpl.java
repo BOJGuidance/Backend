@@ -13,6 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -55,6 +58,24 @@ public class ProblemServiceImpl implements ProblemService {
         }
         List<ProblemResponseDto> problemResponseDtos = problems.stream().toList();
         return new ProblemsResponseDto().toArray(problemResponseDtos, problemResponseDtos.size());
+    }
+
+    @Override
+    public ProblemsResponseDto recommendation(String memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new MemberException(ResponseCode.MEMBER_NOT_EXIST)
+        );
+        List<String> weakAlgorithm = Arrays.stream(member.getWeakAlgorithm().split(",")).toList();
+        List<Integer> problems = problemRepository.findAllByWeakAlgorithms(weakAlgorithm);
+        Collections.shuffle(problems);
+
+        ArrayList<ProblemResponseDto> dtos = new ArrayList<>();
+        List<Integer> problemList = problems.stream().limit(5).toList();
+        for (Integer problemId : problemList) {
+            dtos.add(returnProblemById(problemId));
+        }
+
+        return new ProblemsResponseDto(dtos, dtos.size());
     }
 
     // 문제 id로 문제 알고리즘과 함께 반환하여 주는 공통 기능 메서드

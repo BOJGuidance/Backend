@@ -35,7 +35,6 @@ public class MemberController {
         MemberResponseDto login = memberService.login(dto, httpRequest);
         final HttpSession session = httpRequest.getSession();
         session.setAttribute("memberId", login.getHandle());
-        session.setMaxInactiveInterval(3600);
         return ApiResponse.success(ResponseCode.MEMBER_LOGIN_SUCCESS.getMessage(), login);
     }
 
@@ -70,6 +69,11 @@ public class MemberController {
     public ApiResponse<MemberResponseDto> updateWeakAlgorithm(@PathVariable("id") String id,
                                                               @RequestParam("weakAlgorithm") String weakAlgorithm) {
         return ApiResponse.success(ResponseCode.MEMBER_WEAK_ALGORITHM_UPDATE_SUCCESS.getMessage(), memberService.updateWeakAlgorithm(id, weakAlgorithm));
+    }
+
+    @GetMapping("/update")
+    public void updateMemberDetails() {
+        memberService.updateDetails();
     }
 
 }

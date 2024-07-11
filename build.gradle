@@ -64,6 +64,9 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.4'
 	implementation 'com.fasterxml.jackson.core:jackson-core:2.15.4'
 
+	// crawling
+	implementation 'org.jsoup:jsoup:1.17.2'
+
 	// Parsing User Request Header
 	implementation group: 'eu.bitwalker', name: 'UserAgentUtils', version: '1.21'
 

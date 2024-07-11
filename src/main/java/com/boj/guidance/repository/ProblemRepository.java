@@ -26,6 +26,14 @@ public interface ProblemRepository extends JpaRepository<Problem, Integer> {
     )
     List<Integer> findAllProblemIds(String name);
 
+    // 취약 알고리즘을 포함하고 있는 문제 탐색
+    @Query(value =
+            "SELECT DISTINCT problem_id " +
+            "FROM algorithm " +
+            "WHERE name IN (:weakAlgorithms)", nativeQuery = true
+    )
+    List<Integer> findAllByWeakAlgorithms(@Param("weakAlgorithms") List<String> weakAlgorithms);
+
     // 랜덤으로 5개의 문제 뽑기
     @Query(value =
             "SELECT * " +
