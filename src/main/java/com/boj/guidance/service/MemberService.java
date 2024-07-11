@@ -1,6 +1,7 @@
 package com.boj.guidance.service;
 
 import com.boj.guidance.dto.MemberDto.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface MemberService {
@@ -9,9 +10,7 @@ public interface MemberService {
     MemberResponseDto join(MemberJoinRequestDto dto);
 
     @Transactional
-    MemberResponseDto login(MemberLoginRequestDto dto);
-
-    WeakAlgorithmRequestDto init(String handle);
+    MemberResponseDto login(MemberLoginRequestDto dto, HttpServletRequest httpRequest);
 
     MemberAuthRequestDto authorize();
 

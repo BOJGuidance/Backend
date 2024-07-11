@@ -17,7 +17,4 @@ public interface ProblemService {
 
     @Transactional(readOnly = true)
     ProblemsResponseDto recommendation(String memberId);
-
-    @Transactional(readOnly = true)
-    ProblemsResponseDto recommendProblems(String handle);
 }

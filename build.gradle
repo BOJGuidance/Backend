@@ -67,6 +67,9 @@ dependencies {
 	// crawling
 	implementation 'org.jsoup:jsoup:1.17.2'
 
+	// Parsing User Request Header
+	implementation group: 'eu.bitwalker', name: 'UserAgentUtils', version: '1.21'
+
 	// etc
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

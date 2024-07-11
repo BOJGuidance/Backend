@@ -32,18 +32,10 @@ public class MemberController {
      */
     @PostMapping("/login")
     public ApiResponse<MemberResponseDto> login(@RequestBody MemberLoginRequestDto dto, final HttpServletRequest httpRequest) {
-        MemberResponseDto login = memberService.login(dto);
+        MemberResponseDto login = memberService.login(dto, httpRequest);
         final HttpSession session = httpRequest.getSession();
         session.setAttribute("memberId", login.getHandle());
         return ApiResponse.success(ResponseCode.MEMBER_LOGIN_SUCCESS.getMessage(), login);
-    }
-
-    /**
-     * 사용자 정보 새로고침 (로그인 직후)
-     */
-    @GetMapping("/init/{handle}")
-    public ApiResponse<WeakAlgorithmRequestDto> init(@PathVariable("handle") String handle) {
-        return ApiResponse.success(ResponseCode.MEMBER_WEAK_ALGORITHM_UPDATE_SUCCESS.getMessage(), memberService.init(handle));
     }
 
     /**

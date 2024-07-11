@@ -30,8 +30,6 @@ jobs:
           SPRING_DATA_REDIS_HOST: ${{ secrets.SPRING_DATA_REDIS_HOST_DEV }}
           SPRING_DATA_REDIS_PORT: ${{ secrets.SPRING_DATA_REDIS_PORT }}
           SPRING_SESSION_REDIS_NAMESPACE: ${{ secrets.SPRING_SESSION_REDIS_NAMESPACE }}
-          DJANGO_SERVER_ADDRESS: ${{ secrets.DJANGO_SERVER_ADDRESS }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
       - name: Get current time
         uses: josStorer/get-current-time@v2.0.2
