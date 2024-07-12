@@ -1,4 +1,4 @@
-package com.boj.guidance.config;
+package com.boj.guidance.config.webSocket;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

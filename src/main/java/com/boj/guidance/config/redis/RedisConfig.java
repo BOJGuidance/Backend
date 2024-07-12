@@ -1,4 +1,4 @@
-package com.boj.guidance.config;
+package com.boj.guidance.config.redis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;

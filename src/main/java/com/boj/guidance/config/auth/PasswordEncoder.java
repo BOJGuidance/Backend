@@ -1,4 +1,4 @@
-package com.boj.guidance.config;
+package com.boj.guidance.config.auth;
 
 import com.boj.guidance.util.api.ResponseCode;
 import com.boj.guidance.util.exception.EncodingException;

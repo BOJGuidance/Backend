@@ -1,6 +1,6 @@
 package com.boj.guidance.service.implement;
 
-import com.boj.guidance.config.PasswordEncoder;
+import com.boj.guidance.config.auth.PasswordEncoder;
 import com.boj.guidance.domain.Member;
 import com.boj.guidance.dto.MemberDto.*;
 import com.boj.guidance.repository.MemberRepository;
@@ -17,9 +17,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.ResponseEntity;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;

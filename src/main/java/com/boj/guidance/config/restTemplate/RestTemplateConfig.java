@@ -1,4 +1,4 @@
-package com.boj.guidance.config;
+package com.boj.guidance.config.restTemplate;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

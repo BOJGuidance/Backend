@@ -1,4 +1,4 @@
-package com.boj.guidance.config;
+package com.boj.guidance.config.webSocket;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

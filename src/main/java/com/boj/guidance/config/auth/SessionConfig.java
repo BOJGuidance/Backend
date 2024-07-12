@@ -1,4 +1,4 @@
-package com.boj.guidance.config;
+package com.boj.guidance.config.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

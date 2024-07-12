@@ -1,4 +1,4 @@
-package com.boj.guidance.config;
+package com.boj.guidance.config.redis;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;

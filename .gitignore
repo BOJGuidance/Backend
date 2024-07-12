@@ -4,5 +4,3 @@ build
 dump.rdb
 
 src/main/resources/application-dev.properties
-
-src/main/java/com/boj/guidance/config/auth

@@ -1,6 +1,6 @@
 package com.boj.guidance.Member;
 
-import com.boj.guidance.config.PasswordEncoder;
+import com.boj.guidance.config.auth.PasswordEncoder;
 import com.boj.guidance.domain.Member;
 import com.boj.guidance.domain.enumerate.MemberRole;
 import com.boj.guidance.domain.enumerate.StudyGroupState;
