@@ -5,9 +5,11 @@ import com.boj.guidance.domain.Member;
 import com.boj.guidance.domain.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class CommentCreateRequestDto {
     private String content;
 
