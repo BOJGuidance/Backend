@@ -1,6 +1,7 @@
 package com.boj.guidance.repository;
 
 import com.boj.guidance.domain.Problem;
+import com.boj.guidance.repository.customRepository.ProblemCustomRepository;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProblemRepository extends JpaRepository<Problem, Integer> {
+public interface ProblemRepository extends JpaRepository<Problem, Integer>, ProblemCustomRepository {
 
     // 문제 id로 문제의 알고리즘 목록 탐색
     @Query(value =
@@ -33,12 +34,4 @@ public interface ProblemRepository extends JpaRepository<Problem, Integer> {
             "WHERE name IN (:weakAlgorithms)", nativeQuery = true
     )
     List<Integer> findAllByWeakAlgorithms(@Param("weakAlgorithms") List<String> weakAlgorithms);
-
-    // 랜덤으로 5개의 문제 뽑기
-    @Query(value =
-            "SELECT * " +
-            "FROM problem " +
-            "ORDER BY RAND() LIMIT 5", nativeQuery = true)
-    List<Problem> findRandomProblem();
-
 }
