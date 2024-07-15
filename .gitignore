@@ -6,3 +6,10 @@ dump.rdb
 src/main/resources/application-dev.properties
 
 src/main/java/com/boj/guidance/config/auth
+
+src/main/resources/static/AllInOne.css
+src/main/resources/static/font.css
+src/main/resources/static/highlight.min.js
+src/main/resources/static/index.html
+src/main/resources/static/jquery.min.js
+src/main/resources/static/search.js
