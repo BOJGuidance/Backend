@@ -1,11 +1,8 @@
 package com.boj.guidance.controller.page;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import com.boj.guidance.dto.MemberDto.WeakAlgorithmRequestDto;
 import com.boj.guidance.dto.StudyGroupDto.StudyGroupResponseDto;
-import com.boj.guidance.service.MemberService;
 import com.boj.guidance.service.StudyGroupService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -21,30 +18,36 @@ import java.util.Optional;
 @Controller
 public class PageController {
 
-    private final MemberService memberService;
     private final StudyGroupService studyGroupService;
-    private final ObjectMapper objectMapper;
 
-    // 로그인 페이지 이동
+    /**
+     * 로그인 페이지
+     */
     @GetMapping("/login")
     public String login() {
         return "login";
     }
 
-    // 회원가입 페이지 이동
+    /**
+     * 회원가입 페이지
+     */
     @GetMapping("/join")
     public String join() {
         return "join";
     }
 
-    // 홈페이지 이동
+    /**
+     * 홈페이지
+     */
     @GetMapping(value = {"/home", "/"})
     public String home(HttpSession session) {
         String userName = (String) session.getAttribute("memberId");
         return "home";
     }
 
-    // 스터디그룹 페이지
+    /**
+     * 스터디그룹 페이지
+     */
     @GetMapping("/study")
     public String study(HttpSession session, Model model) {
         String userName = (String) session.getAttribute("memberId");
@@ -60,7 +63,9 @@ public class PageController {
         return "study";
     }
 
-    // 문제 추천 페이지
+    /**
+     * 문제 추천 페이지
+     */
     @GetMapping("/recommendation")
     public String recommendation(HttpSession session, Model model) {
         String userName = (String) session.getAttribute("memberId");
@@ -72,6 +77,9 @@ public class PageController {
         }
     }
 
+    /**
+     * 코드 분석 페이지
+     */
     @GetMapping("/codeAnalysis")
     public String getCodeAnalysisList(HttpSession session,
                                       @RequestParam(required = false) String category,
@@ -106,6 +114,9 @@ public class PageController {
         }
     }
 
+    /**
+     * 코드 분석 상세 페이지
+     */
     @GetMapping("/codeAnalysis/{id}")
     public String getCodeAnalysisDetail(HttpSession session,
                                         @PathVariable String id,
@@ -133,7 +144,9 @@ public class PageController {
         return "codeAnalysisDetail";
     }
 
-    // 커뮤니티 페이지
+    /**
+     * 커뮤니티 페이지
+     */
     @GetMapping("/community")
     public String community(HttpSession session) {
         String userName = (String) session.getAttribute("memberId");
@@ -144,7 +157,9 @@ public class PageController {
         }
     }
 
-    // 나는 어디쯤일까? 페이지
+    /**
+     * 나는 어디쯤일까? 페이지
+     */
     @GetMapping("/mypage")
     public String mypage(HttpSession session, Model model) {
         String userName = (String) session.getAttribute("memberId");
@@ -154,7 +169,9 @@ public class PageController {
         return "mypage";
     }
 
-    // 라이브 코딩 에디터
+    /**
+     * 스터디그룹 코딩 에디터
+     */
     @GetMapping("/editor")
     public String editor(HttpSession session, Model model) {
         String userName = (String) session.getAttribute("memberId");
