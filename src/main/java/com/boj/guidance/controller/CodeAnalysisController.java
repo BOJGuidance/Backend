@@ -8,12 +8,17 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/openai")
+@RequestMapping("/api/v1/openai")
 @CrossOrigin(origins = {"*"})
 public class CodeAnalysisController {
 
     private final CodeAnalysisService codeAnalysisService;
 
+    /**
+     * 코드 분석
+     *
+     * @param codeContent 코드 내용
+     */
     @PostMapping("/analyze")
     public String analyzeCode(@RequestBody String codeContent) throws IOException {
         return codeAnalysisService.analyzeCode(codeContent);
