@@ -13,13 +13,16 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/member")
+@RequestMapping("/api/v1/member")
 public class MemberController {
 
     private final MemberService memberService;
 
     /**
-     * 사용자 회원가입 기능
+     * 회원가입
+     *
+     * @param dto 사용자 정보
+     * @return 회원가입된 사용자 정보
      */
     @PostMapping("/join")
     public ApiResponse<MemberResponseDto> join(@RequestBody MemberJoinRequestDto dto) {
@@ -28,9 +31,13 @@ public class MemberController {
     }
 
     /**
-     * 사용자 로그인 기능
+     * 로그인
+     *
+     * @param dto id/pw
+     * @param httpRequest 요청 header
+     * @return 로그인한 사용자 정보
      */
-    @PostMapping("/login")
+    @GetMapping("/login")
     public ApiResponse<MemberResponseDto> login(@RequestBody MemberLoginRequestDto dto, final HttpServletRequest httpRequest) {
         MemberResponseDto login = memberService.login(dto, httpRequest);
         final HttpSession session = httpRequest.getSession();
@@ -39,39 +46,54 @@ public class MemberController {
     }
 
     /**
-     * 백준 사용자 인증하기
+     * 백준 사용자 정보 인증
+     *
+     * @return 사용자 정보
      */
-    @PostMapping("/auth")
+    @GetMapping("/auth")
     public MemberAuthRequestDto authorize() {
         return memberService.authorize();
     }
 
     /**
      * 사용자 역할 변경
+     *
+     * @param memberId 사용자 id
+     * @return 변경된 사용자 정보
      */
-    @PutMapping("/role/{id}")
-    public ApiResponse<MemberResponseDto> changeRole(@PathVariable("id") String id) {
-        return ApiResponse.success(ResponseCode.MEMBER_ROLE_CHANGE_SUCCESS.getMessage(), memberService.changeRole(id));
+    @PutMapping("/role/{memberId}")
+    public ApiResponse<MemberResponseDto> changeRole(@PathVariable("memberId") String memberId) {
+        return ApiResponse.success(ResponseCode.MEMBER_ROLE_CHANGE_SUCCESS.getMessage(), memberService.changeRole(memberId));
     }
 
     /**
-     * 사용자 스터디그룹 모집 활성화 상태 변경
+     * 스터디그룹 대기 상태 변경
+     *
+     * @param memberId 사용자 id
+     * @return 변경된 사용자 정보
      */
-    @PutMapping("/state/{id}")
-    public ApiResponse<MemberResponseDto> changeState(@PathVariable("id") String id) {
-        return ApiResponse.success(ResponseCode.MEMBER_STATE_CHANGE_SUCCESS.getMessage(), memberService.changeState(id));
+    @PutMapping("/state/{memberId}")
+    public ApiResponse<MemberResponseDto> changeState(@PathVariable("memberId") String memberId) {
+        return ApiResponse.success(ResponseCode.MEMBER_STATE_CHANGE_SUCCESS.getMessage(), memberService.changeState(memberId));
     }
 
     /**
-     * 사용자 취약 알고리즘 업데이트
+     * 취약 알고리즘 변경
+     *
+     * @param memberId 사용자 id
+     * @param weakAlgorithm 취약 알고리즘
+     * @return 변경된 사용자 정보
      */
-    @PutMapping("/weak/{id}")
-    public ApiResponse<MemberResponseDto> updateWeakAlgorithm(@PathVariable("id") String id,
+    @PutMapping("/weak/{memberId}")
+    public ApiResponse<MemberResponseDto> updateWeakAlgorithm(@PathVariable("memberId") String memberId,
                                                               @RequestParam("weakAlgorithm") String weakAlgorithm) {
-        return ApiResponse.success(ResponseCode.MEMBER_WEAK_ALGORITHM_UPDATE_SUCCESS.getMessage(), memberService.updateWeakAlgorithm(id, weakAlgorithm));
+        return ApiResponse.success(ResponseCode.MEMBER_WEAK_ALGORITHM_UPDATE_SUCCESS.getMessage(), memberService.updateWeakAlgorithm(memberId, weakAlgorithm));
     }
 
-    @GetMapping("/update")
+    /**
+     * 사용자 정보 일괄 수정 (취약 알고리즘)
+     */
+    @PutMapping("/update")
     public void updateMemberDetails() {
         memberService.updateDetails();
     }
