@@ -13,6 +13,6 @@ Baekjoon Online Judge Guidance (백준 사용자를 위한 성장 로드맵 제�
 
 ---
 
-## 시스템 Flow
+## Flow chart
 <img width="992" alt="image" src="https://github.com/user-attachments/assets/53673b71-dfd9-400d-a422-7f38634d4a82">
 
