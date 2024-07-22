@@ -16,26 +16,23 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/{postId}/{memberId}")
-    public ApiResponse<CommentResponseDto> create(
-            @PathVariable("memberId") String memberId,
+    @PostMapping("/{postId}")
+    public ApiResponse<CommentResponseDto> createComment (
             @PathVariable("postId") String postId,
             @RequestBody CommentCreateRequestDto dto
     ) {
-        return ApiResponse.success(ResponseCode.COMMENT_CREATE_SUCCESS.getMessage(), commentService.createComment(memberId, postId, dto));
+        return ApiResponse.success(ResponseCode.COMMENT_CREATE_SUCCESS.getMessage(), commentService.createComment(postId, dto));
     }
 
-    @PostMapping("/{postId}/{memberId}/{commentId}")
-    public ApiResponse<CommentResponseDto> create(
-            @PathVariable("memberId") String memberId,
+    @PostMapping("/child/{postId}")
+    public ApiResponse<CommentResponseDto> createChildComment(
             @PathVariable("postId") String postId,
-            @PathVariable("commentId") String commentId,
             @RequestBody CommentCreateRequestDto dto
     ) {
-        return ApiResponse.success(ResponseCode.COMMENT_CREATE_SUCCESS.getMessage(), commentService.createChildComment(memberId, postId, commentId, dto));
+        return ApiResponse.success(ResponseCode.COMMENT_CREATE_SUCCESS.getMessage(), commentService.createChildComment(postId, dto));
     }
 
-    @PutMapping("/{commentId}/{memberId}")
+    @PostMapping("/{commentId}/{memberId}")
     public ApiResponse<CommentResponseDto> delete(
             @PathVariable("memberId") String memberId,
             @PathVariable("commentId") String commentId

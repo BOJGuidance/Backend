@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentCreateRequestDto {
+    private String memberId;
+    private String parentCommentId;
     private String content;
 
     public Comment toEntity(Member member, Post post, Comment parentComment) {

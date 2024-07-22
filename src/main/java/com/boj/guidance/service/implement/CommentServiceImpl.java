@@ -28,8 +28,8 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
 
     @Override
-    public CommentResponseDto createComment(String memberId, String postId, CommentCreateRequestDto dto) {
-        Member creator = getMember(memberId);
+    public CommentResponseDto createComment(String postId, CommentCreateRequestDto dto) {
+        Member creator = getMember(dto.getMemberId());
         Post post = getPost(postId);
         Comment comment = dto.toEntity(creator, post, null);
         creator.addComment(comment);
@@ -38,10 +38,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentResponseDto createChildComment(String memberId, String postId, String commentId, CommentCreateRequestDto dto) {
-        Member creator = getMember(memberId);
+    public CommentResponseDto createChildComment(String postId, CommentCreateRequestDto dto) {
+        Member creator = getMember(dto.getMemberId());
         Post post = getPost(postId);
-        Comment comment = commentRepository.findById(commentId)
+        Comment comment = commentRepository.findById(dto.getParentCommentId())
                 .orElseThrow(
                         () -> new CommentException(ResponseCode.POST_NOT_FOUND)
                 );

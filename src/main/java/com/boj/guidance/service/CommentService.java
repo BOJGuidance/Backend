@@ -8,10 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 public interface CommentService {
 
     @Transactional
-    CommentResponseDto createComment(String memberId, String postId, CommentCreateRequestDto dto);
+    CommentResponseDto createComment(String postId, CommentCreateRequestDto dto);
 
     @Transactional
-    CommentResponseDto createChildComment(String memberId, String postId, String commentId, CommentCreateRequestDto dto);
+    CommentResponseDto createChildComment(String postId, CommentCreateRequestDto dto);
 
     @Transactional
     CommentResponseDto deleteComment(String memberId, String commentId);

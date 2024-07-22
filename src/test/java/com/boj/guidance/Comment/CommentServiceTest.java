@@ -55,13 +55,13 @@ public class CommentServiceTest {
     @DisplayName("댓글 생성")
     void createComment() {
         // given
-        CommentCreateRequestDto createRequestDto = new CommentCreateRequestDto("comment1");
+        CommentCreateRequestDto createRequestDto = new CommentCreateRequestDto("member", null, "childComment1");
         Comment comment = getComment();
 
         given(commentRepository.save(any(Comment.class))).willReturn(comment);
 
         // when
-        CommentResponseDto created = commentService.createComment("member", "post", createRequestDto);
+        CommentResponseDto created = commentService.createComment("post", createRequestDto);
 
         // then
         assertEquals("comment1", created.getContent());
@@ -75,13 +75,13 @@ public class CommentServiceTest {
         // given
         Comment comment = getComment();
         Comment childComment = getChildComment();
-        CommentCreateRequestDto createRequestDto = new CommentCreateRequestDto("childComment1");
+        CommentCreateRequestDto createRequestDto = new CommentCreateRequestDto("member", "comment", "childComment1");
 
         given(commentRepository.save(any(Comment.class))).willReturn(childComment);
         given(commentRepository.findById("comment")).willReturn(Optional.of(comment));
 
         // when
-        CommentResponseDto created = commentService.createChildComment("member", "post", "comment", createRequestDto);
+        CommentResponseDto created = commentService.createChildComment("post", createRequestDto);
 
         // then
         assertEquals(1, comment.getCommentList().size());
